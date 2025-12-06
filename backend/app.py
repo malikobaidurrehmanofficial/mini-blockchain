@@ -7,7 +7,9 @@ from typing import Dict, Optional
 from pathlib import Path
 
 # Import from the same directory
-from .blockchain_core import Blockchain, Node
+# from .blockchain_core import Blockchain, Node
+from blockchain_core import Blockchain, Node
+
 
 app = FastAPI(title="Mini Blockchain Demo API")
 
