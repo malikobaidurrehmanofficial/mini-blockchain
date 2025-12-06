@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About – Underground Unit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-purple: #b820ff;
+            --neon-pink: #ff006e;
+            --dark-bg: #0a0a0f;
+            --dark-card: #141420;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: 
+                radial-gradient(ellipse at top left, rgba(0, 240, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at top right, rgba(184, 32, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom left, rgba(255, 0, 110, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(0, 240, 255, 0.06) 0%, transparent 50%),
+                linear-gradient(135deg, #0a0a0f 0%, #1a0b2e 50%, #0a0a0f 100%);
+            background-attachment: fixed;
+            color: #e0e0ff;
+            overflow-x: hidden;
+            position: relative;
+            animation: backgroundFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundFloat {
+            0%, 100% {
+                background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%, center;
+            }
+            50% {
+                background-position: 10% 10%, 90% 10%, 10% 90%, 90% 90%, center;
+            }
+        }
+
+        /* Animated background grid */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Moving gradient light overlay - optimized */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle 800px at center, 
+                    rgba(0, 240, 255, 0.1) 0%, 
+                    rgba(184, 32, 255, 0.08) 30%, 
+                    transparent 60%);
+            animation: gradientMove 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+            will-change: transform, opacity;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { 
+                transform: translate(0%, 0%) rotate(0deg);
+                opacity: 0.5;
+            }
+            50% { 
+                transform: translate(25%, 25%) rotate(180deg);
+                opacity: 0.7;
+            }
+        }
+
+        /* Glitch effect for title */
+        @keyframes glitch {
+            0%, 90%, 100% {
+                text-shadow: none;
+            }
+            92% {
+                text-shadow: 2px 0 var(--neon-blue), -2px 0 var(--neon-pink);
+            }
+            94% {
+                text-shadow: -2px 0 var(--neon-blue), 2px 0 var(--neon-pink);
+            }
+        }
+
+        .glitch-title {
+            font-family: 'Orbitron', sans-serif;
+            animation: glitch 3s ease-in-out infinite;
+            position: relative;
+            filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.6));
+        }
+
+        /* Neon glow effects */
+        .neon-border {
+            border: 2px solid var(--neon-blue);
+            box-shadow: 
+                0 0 15px var(--neon-blue),
+                inset 0 0 10px rgba(0, 240, 255, 0.1);
+            position: relative;
+        }
+
+        .neon-glow-blue {
+            box-shadow: 
+                0 0 20px rgba(0, 240, 255, 0.5),
+                0 0 40px rgba(0, 240, 255, 0.3),
+                inset 0 0 20px rgba(0, 240, 255, 0.1);
+        }
+
+        .neon-glow-purple {
+            box-shadow: 
+                0 0 20px rgba(184, 32, 255, 0.5),
+                0 0 40px rgba(184, 32, 255, 0.3),
+                inset 0 0 20px rgba(184, 32, 255, 0.1);
+        }
+
+        /* Team member cards */
+        .team-card {
+            background: rgba(20, 20, 32, 0.8);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+            border-radius: inherit;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.4s ease;
+        }
+
+        .team-card:hover::before {
+            opacity: 0.5;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            border-color: var(--neon-blue);
+            box-shadow: 
+                0 10px 40px rgba(0, 240, 255, 0.5),
+                0 0 30px rgba(184, 32, 255, 0.4);
+            will-change: transform;
+        }
+
+        /* Circular image with glow */
+        .team-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 3px solid rgba(0, 240, 255, 0.5);
+            box-shadow: 
+                0 0 20px rgba(0, 240, 255, 0.4),
+                inset 0 0 20px rgba(0, 240, 255, 0.1);
+            transition: all 0.4s ease;
+            object-fit: cover;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(184, 32, 255, 0.1));
+        }
+
+        .team-card:hover .team-img {
+            border-color: var(--neon-purple);
+            box-shadow: 
+                0 0 30px rgba(184, 32, 255, 0.8),
+                0 0 50px rgba(0, 240, 255, 0.5),
+                inset 0 0 20px rgba(184, 32, 255, 0.2);
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Section divider */
+        .cyber-divider {
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--neon-blue) 20%, 
+                var(--neon-purple) 50%, 
+                var(--neon-blue) 80%, 
+                transparent);
+            box-shadow: 0 0 15px var(--neon-blue);
+            position: relative;
+        }
+
+        /* Feature cards */
+        .feature-card {
+            background: rgba(20, 20, 32, 0.6);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-left: 3px solid var(--neon-blue);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            background: rgba(20, 20, 32, 0.9);
+            border-left-width: 5px;
+            border-left-color: var(--neon-purple);
+            transform: translateX(10px);
+            box-shadow: -5px 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        /* Animated text gradient */
+        .gradient-text {
+            background: linear-gradient(90deg, 
+                var(--neon-blue), 
+                var(--neon-purple), 
+                var(--neon-pink));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s linear infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* Scanline effect */
+        .scanline {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scanline::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                rgba(0, 240, 255, 0.1) 50%,
+                transparent 100%
+            );
+            animation: scan 4s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: -100%; }
+            100% { top: 100%; }
+        }
+
+        /* Back button */
+        .back-btn {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(184, 32, 255, 0.1));
+            border: 1px solid var(--neon-blue);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.3), rgba(184, 32, 255, 0.3));
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+            transform: translateX(-5px);
+        }
+
+        /* Logo container */
+        .logo-container {
+            position: relative;
+        }
+
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.2), transparent 70%);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+    <div class="relative z-10">
+        <!-- Header with Back Button -->
+        <div class="container mx-auto px-4 py-6">
+            <a href="index.html" class="back-btn inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-cyan-300 hover:text-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Home
+            </a>
+        </div>
+
+        <!-- Hero Section -->
+        <section class="container mx-auto px-4 py-12 text-center">
+            <div class="scanline mb-8">
+                <h1 class="glitch-title text-5xl md:text-7xl font-black mb-4 tracking-wider">
+                    UNDERGROUND UNIT <span class="gradient-text">– ABOUT US</span>
+                </h1>
+                <div class="cyber-divider my-8 max-w-2xl mx-auto"></div>
+                <p class="text-xl md:text-2xl font-medium text-cyan-300 mb-3 tracking-wide">
+                    Building the Future of Decentralized Trust
+                </p>
+                <p class="text-base text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                    A hands-on blockchain implementation project showcasing cryptographic security, 
+                    distributed consensus, and modern web development practices.
+                </p>
+            </div>
+        </section>
+
+        <!-- Project Description Section -->
+        <section class="container mx-auto px-4 py-16">
+            <div class="max-w-5xl mx-auto">
+                <div class="neon-border rounded-2xl p-8 md:p-12 bg-gradient-to-br from-slate-900/80 to-purple-900/20 backdrop-blur-lg mb-12">
+                    <h2 class="text-4xl font-bold text-cyan-400 mb-6 font-['Orbitron']">
+                        🔗 PROJECT OVERVIEW
+                    </h2>
+                    <p class="text-lg text-gray-300 leading-relaxed mb-6">
+                        This project is a <span class="text-cyan-300 font-semibold">fully functional mini blockchain implementation</span> 
+                        built from the ground up using <span class="text-purple-300 font-semibold">Python FastAPI</span> for the backend and 
+                        <span class="text-pink-300 font-semibold">React with Tailwind CSS</span> for the frontend. 
+                        It demonstrates core blockchain concepts including cryptographic hashing, proof-of-work mining, 
+                        chain validation, and distributed network synchronization.
+                    </p>
+                    <p class="text-lg text-gray-300 leading-relaxed mb-6">
+                        The backend leverages <span class="text-cyan-300 font-semibold">custom blockchain logic</span> with 
+                        <span class="text-purple-300 font-semibold">SHA-256 cryptographic hashing</span> to ensure data integrity and immutability. 
+                        Each block is securely linked through cryptographic hash pointers, creating an tamper-evident chain. 
+                        The system implements a configurable proof-of-work consensus mechanism that simulates real-world mining operations.
+                    </p>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        Our interactive web interface provides real-time visualization of blockchain operations, allowing users to 
+                        mine blocks, tamper with data, simulate 51% attacks, track miner rewards, and observe node synchronization. 
+                        This hands-on approach makes complex cryptographic concepts accessible and demonstrates why blockchain technology 
+                        is revolutionizing digital trust and decentralized systems.
+                    </p>
+                </div>
+
+                <!-- Key Features -->
+                <h3 class="text-3xl font-bold text-purple-400 mb-8 text-center font-['Orbitron']">
+                    ⚡ CORE FEATURES
+                </h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="feature-card p-6 rounded-lg">
+                        <div class="flex items-start gap-4">
+                            <div class="text-4xl">🧱</div>
+                            <div>
+                                <h4 class="text-xl font-bold text-cyan-300 mb-2">Block Structure</h4>
+                                <p class="text-gray-400">
+                                    Each block contains an index, timestamp, data payload, previous hash, current hash, and nonce value. 
+                                    Blocks are cryptographically linked to form an immutable chain.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card p-6 rounded-lg">
+                        <div class="flex items-start gap-4">
+                            <div class="text-4xl">🔐</div>
+                            <div>
+                                <h4 class="text-xl font-bold text-cyan-300 mb-2">SHA-256 Hashing</h4>
+                                <p class="text-gray-400">
+                                    Utilizes industry-standard SHA-256 cryptographic hash function to ensure data integrity. 
+                                    Any tampering with block data immediately invalidates the entire chain.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card p-6 rounded-lg">
+                        <div class="flex items-start gap-4">
+                            <div class="text-4xl">⛏️</div>
+                            <div>
+                                <h4 class="text-xl font-bold text-cyan-300 mb-2">Proof-of-Work</h4>
+                                <p class="text-gray-400">
+                                    Implements a configurable difficulty-based mining system. Miners must find a nonce that produces 
+                                    a hash with the required number of leading zeros, simulating real blockchain consensus.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card p-6 rounded-lg">
+                        <div class="flex items-start gap-4">
+                            <div class="text-4xl">🚨</div>
+                            <div>
+                                <h4 class="text-xl font-bold text-cyan-300 mb-2">Tampering Detection</h4>
+                                <p class="text-gray-400">
+                                    Real-time validation system that immediately detects any unauthorized modifications. 
+                                    Demonstrates how blockchain's immutability protects against fraudulent alterations.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card p-6 rounded-lg">
+                        <div class="flex items-start gap-4">
+                            <div class="text-4xl">💰</div>
+                            <div>
+                                <h4 class="text-xl font-bold text-cyan-300 mb-2">Miner Rewards</h4>
+                                <p class="text-gray-400">
+                                    Tracks and distributes mining rewards to participants. Each successfully mined block 
+                                    awards 50 coins to the miner, simulating cryptocurrency incentive mechanisms.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card p-6 rounded-lg">
+                        <div class="flex items-start gap-4">
+                            <div class="text-4xl">🔄</div>
+                            <div>
+                                <h4 class="text-xl font-bold text-cyan-300 mb-2">Node Synchronization</h4>
+                                <p class="text-gray-400">
+                                    Multiple nodes can maintain independent blockchains and sync using the longest-chain rule. 
+                                    Demonstrates distributed consensus in decentralized networks.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Underground Unit Section -->
+        <section class="container mx-auto px-4 py-16">
+            <div class="text-center mb-12">
+                <h2 class="glitch-title text-5xl md:text-6xl font-black mb-4 tracking-wider">
+                    THE <span class="gradient-text">UNDERGROUND</span> UNIT
+                </h2>
+                <div class="cyber-divider my-8 max-w-xl mx-auto"></div>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    A team of cybersecurity enthusiasts and blockchain developers pushing the boundaries 
+                    of distributed ledger technology. United by code, secured by cryptography.
+                </p>
+            </div>
+
+            <!-- Team Grid -->
+            <div class="max-w-6xl mx-auto">
+                <!-- Main Banner -->
+                <div class="mb-16">
+                    <div class="neon-border rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900/80 to-purple-900/20 backdrop-blur-lg">
+                        <img src="underground.png" alt="Underground Blockchain Unit" class="w-full h-64 object-cover" style="max-height: 300px;">
+                        <div class="p-8 text-center">
+                            <h3 class="text-3xl font-bold text-cyan-300 mb-4 font-['Orbitron']">
+                                UNDERGROUND UNIT
+                            </h3>
+                            <p class="text-gray-300 text-base leading-relaxed max-w-3xl mx-auto">
+                                We are a collective of practical builders, not just theorists. Our team specializes in cryptographic security, 
+                                distributed systems, and modern web development. From backend architecture to cyberpunk UI design, 
+                                we handle the full stack. This blockchain project showcases our ability to transform complex 
+                                cryptographic concepts into functional, interactive systems. We believe in learning by building, 
+                                and this mini blockchain is our proof-of-work.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Members -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Member 1: Malik Obaid Ur Rehman -->
+                    <div class="team-card p-6 rounded-2xl text-center">
+                        <div class="mb-6 flex justify-center">
+                            <img src="obaid.png" alt="Malik Obaid Ur Rehman" class="team-img" style="width: 180px; height: 180px;">
+                        </div>
+                        <h3 class="text-xl font-bold text-purple-300 mb-2 font-['Orbitron']">
+                            Malik Obaid Ur Rehman
+                        </h3>
+                        <div class="h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent mb-3"></div>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            Lead Architect & Core Developer. Designed the blockchain's cryptographic foundation, 
+                            implemented SHA-256 hashing, and built the proof-of-work consensus mechanism. 
+                            Handles backend architecture and secure coding practices.
+                        </p>
+                        <a href="https://www.linkedin.com/in/malik-obaid-ur-rehman/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.762 2.239 5 5 5h14c2.762 0 5-2.238 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                            </svg>
+                            LinkedIn
+                        </a>
+                    </div>
+
+                    <!-- Member 2: Hassan Lodhi -->
+                    <div class="team-card p-6 rounded-2xl text-center">
+                        <div class="mb-6 flex justify-center">
+                            <img src="hassan.png" alt="Hassan Lodhi" class="team-img" style="width: 180px; height: 180px;">
+                        </div>
+                        <h3 class="text-xl font-bold text-purple-300 mb-2 font-['Orbitron']">
+                            Hassan Lodhi
+                        </h3>
+                        <div class="h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent mb-3"></div>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            Security Analyst & Penetration Tester. Developed tampering detection systems, 
+                            simulated 51% attacks, and validated chain integrity. Ensures the blockchain 
+                            is resilient against common attack vectors.
+                        </p>
+                        <a href="https://www.linkedin.com/in/hassan-lodhi/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.762 2.239 5 5 5h14c2.762 0 5-2.238 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                            </svg>
+                            LinkedIn
+                        </a>
+                    </div>
+
+                    <!-- Member 3: Mubashir Shahzaib -->
+                    <div class="team-card p-6 rounded-2xl text-center">
+                        <div class="mb-6 flex justify-center">
+                            <img src="mubashir.png" alt="Mubashir Shahzaib" class="team-img" style="width: 180px; height: 180px;">
+                        </div>
+                        <h3 class="text-xl font-bold text-purple-300 mb-2 font-['Orbitron']">
+                            Mubashir Shahzaib
+                        </h3>
+                        <div class="h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent mb-3"></div>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            Full-Stack Developer & Backend Engineer. Built the FastAPI REST endpoints, 
+                            implemented node synchronization logic, and connected frontend React components to backend APIs. 
+                            Bridges the gap between UI and blockchain logic.
+                        </p>
+                        <a href="https://www.linkedin.com/in/mubashir-shahzaib/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.762 2.239 5 5 5h14c2.762 0 5-2.238 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                            </svg>
+                            LinkedIn
+                        </a>
+                    </div>
+
+                    <!-- Member 4: Irfanullah Khan -->
+                    <div class="team-card p-6 rounded-2xl text-center">
+                        <div class="mb-6 flex justify-center">
+                            <img src="irfan.png" alt="Irfanullah Khan" class="team-img" style="width: 180px; height: 180px;">
+                        </div>
+                        <h3 class="text-xl font-bold text-purple-300 mb-2 font-['Orbitron']">
+                            Irfanullah Khan
+                        </h3>
+                        <div class="h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent mb-3"></div>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            UI/UX Designer & Frontend Developer. Designed the cyberpunk interface using React and Tailwind CSS, 
+                            created interactive blockchain visualizations, and implemented light/dark mode theming. 
+                            Makes cryptography visually stunning.
+                        </p>
+                        <a href="https://www.linkedin.com/in/irfanullah-khan/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.762 2.239 5 5 5h14c2.762 0 5-2.238 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                            </svg>
+                            LinkedIn
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="border-t border-cyan-900/30 mt-20 bg-gradient-to-br from-slate-900/50 to-purple-900/20 backdrop-blur-lg">
+            <div class="container mx-auto px-4 py-12">
+                <div class="max-w-6xl mx-auto">
+                    <!-- Footer Top -->
+                    <div class="grid md:grid-cols-3 gap-8 mb-8">
+                        <!-- Brand Section -->
+                        <div class="text-center md:text-left">
+                            <h3 class="text-2xl font-bold text-cyan-300 mb-3 font-['Orbitron']">
+                                UNDERGROUND UNIT
+                            </h3>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Building secure, transparent, and decentralized blockchain systems.
+                            </p>
+                        </div>
+
+                        <!-- Quick Links -->
+                        <div class="text-center">
+                            <h4 class="text-lg font-semibold text-purple-300 mb-3 font-['Orbitron']">
+                                Quick Links
+                            </h4>
+                            <div class="flex flex-col gap-2">
+                                <a href="index.html" class="text-gray-400 hover:text-cyan-300 transition-colors text-sm">
+                                    🏠 Home
+                                </a>
+                                <a href="visualizer.html" class="text-gray-400 hover:text-cyan-300 transition-colors text-sm">
+                                    🔗 Blockchain Visualizer
+                                </a>
+                                <a href="https://github.com/malikobaidurrehmanofficial/InformationSecurityLabs" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-cyan-300 transition-colors text-sm">
+                                    💻 GitHub Repository
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Institution Info -->
+                        <div class="text-center md:text-right">
+                            <h4 class="text-lg font-semibold text-purple-300 mb-3 font-['Orbitron']">
+                                Institution
+                            </h4>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                COMSATS University Abbottabad<br/>
+                                Dhamtour Campus<br/>
+                                Department of Computer Science
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Footer Divider -->
+                    <div class="cyber-divider my-6"></div>
+
+                    <!-- Footer Bottom -->
+                    <div class="text-center">
+                        <p class="text-cyan-300 font-semibold text-base mb-2 font-['Orbitron']">
+                            🔐 DEVELOPED BY UNDERGROUND UNIT
+                        </p>
+                        <p class="text-purple-400 text-sm mt-2">
+                            © 2025 All Rights Reserved • Secured by Cryptography
+                        </p>
+                        <div class="mt-4 flex justify-center gap-4 text-xs text-gray-600">
+                            <span>SHA-256 ENCRYPTED</span>
+                            <span>•</span>
+                            <span>PROOF-OF-WORK VERIFIED</span>
+                            <span>•</span>
+                            <span>BLOCKCHAIN SECURED</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
