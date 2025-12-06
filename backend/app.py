@@ -203,19 +203,19 @@ def node_sync(req: NodeSyncRequest):
 
 # ---------- Frontend routes ----------
 
-@app.get("/")
-def read_root():
-    """Serve the homepage"""
-    return FileResponse(str(FRONTEND_DIR / "index.html"))
+# @app.get("/")
+# def read_root():
+#     """Serve the homepage"""
+#     return FileResponse(str(FRONTEND_DIR / "index.html"))
 
 
-@app.get("/about")
-def read_about():
-    """Serve the about page"""
-    return FileResponse(str(FRONTEND_DIR / "about.html"))
+# @app.get("/about")
+# def read_about():
+#     """Serve the about page"""
+#     return FileResponse(str(FRONTEND_DIR / "about.html"))
 
 
-@app.get("/visualizer")
-def read_visualizer():
-    """Serve the visualizer page"""
-    return FileResponse(str(FRONTEND_DIR / "visualizer.html"))
+# @app.get("/visualizer")
+# def read_visualizer():
+#     """Serve the visualizer page"""
+#     return FileResponse(str(FRONTEND_DIR / "visualizer.html"))
