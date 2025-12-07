@@ -22,11 +22,11 @@ app.add_middleware(
 )
 
 # Get the frontend directory path
-BASE_DIR = Path(__file__).resolve().parent.parent
-FRONTEND_DIR = BASE_DIR / "frontend"
+# BASE_DIR = Path(__file__).resolve().parent.parent
+# FRONTEND_DIR = BASE_DIR / "frontend"
 
-# Mount static files
-app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
+# # Mount static files
+# app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
 
 
 # Single main blockchain for simple demos
